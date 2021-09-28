@@ -60,9 +60,20 @@ class Room
      */
     private $regions;
 
+    /**
+     * @ORM\OneToOne(targetEntity=UnavailablePeriod::class, mappedBy="Room", cascade={"persist", "remove"})
+     */
+    private $unavailablePeriod;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Reservation::class, mappedBy="Room", orphanRemoval=true)
+     */
+    private $reservations;
+
     public function __construct()
     {
         $this->regions = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -174,6 +185,58 @@ class Room
     public function removeRegion(Region $region): self
     {
         $this->regions->removeElement($region);
+
+        return $this;
+    }
+
+    public function getUnavailablePeriod(): ?UnavailablePeriod
+    {
+        return $this->unavailablePeriod;
+    }
+
+    public function setUnavailablePeriod(?UnavailablePeriod $unavailablePeriod): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($unavailablePeriod === null && $this->unavailablePeriod !== null) {
+            $this->unavailablePeriod->setRoom(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($unavailablePeriod !== null && $unavailablePeriod->getRoom() !== $this) {
+            $unavailablePeriod->setRoom($this);
+        }
+
+        $this->unavailablePeriod = $unavailablePeriod;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Reservation[]
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): self
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations[] = $reservation;
+            $reservation->setRoom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): self
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getRoom() === $this) {
+                $reservation->setRoom(null);
+            }
+        }
 
         return $this;
     }

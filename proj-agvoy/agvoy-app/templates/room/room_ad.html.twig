@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Couettes et cafés - Annonce {% endblock %}
+
+{% block body %}
+    <h1>Couette et cafés</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Owner</th>
+                <th>prix</th>
+                <th>capacité</th>
+                <th>Superficie</th>
+                <th>Description</th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ room.owner }}</td>
+                <td>{{ room.price }}</td>
+                <td>{{ room.capacity }}</td>
+                <td>{{ room.superficy }}</td>
+                <td>{{ room.description }}</td>
+                <td>
+                    <a href="{{ path('room_index') }}">
+                        Go back
+                    </a>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+{% endblock %}
