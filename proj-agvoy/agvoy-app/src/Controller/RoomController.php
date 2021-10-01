@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Region;
 use App\Entity\Room;
+use PhpParser\Node\Expr\Array_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,7 +29,7 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/{roomid}", name="room_ad", requirements={ "roomid": "\d+"}, methods="GET")
+     * @Route("/{id}", name="room_ad", requirements={ "id": "\d+"}, methods="GET")
      */
     public function showRoom(Room $room): Response
     {
@@ -38,15 +39,32 @@ class RoomController extends AbstractController
     }
 
     /**
-     * @Route("/filter/{regionid}", name="room_filtered", requirements={ "regionid": "\d+"}, methods="GET")
+     * @Route("/filter/{id}", name="room_filtered", requirements={ "id": "\d+"}, methods="GET")
      */
     public function filteredRegion(Region $region): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $rooms = $em->getRepository(Room::class)->findBy(['region' => $region]);
+        // TODO: Demander si on peut pas faire que en SQL
+        //$rooms = $em->getRepository(Room::class)->findBy(['regions' => $region]);
+
+        $rooms = $em->getRepository(Room::class)->findAll();
+        $filteredRooms = array();
+        foreach($rooms as $room)
+        {
+            $regions = $room->getRegions();
+            foreach($regions as $reg)
+            {
+                if($region->getId() == $reg->getId())
+                {
+                    array_push($filteredRooms, $room);
+                    break;
+                }
+            }
+        }
 
         return $this->render('room/filter.html.twig', [
-            'rooms' => $rooms,
+            'rooms' => $filteredRooms,
+            'region' => $region,
         ]);
     }
 }

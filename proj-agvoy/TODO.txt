@@ -4,6 +4,10 @@
 
 Lien vers le cahier des charges : https://www-inf.telecom-sudparis.eu/COURS/CSC4101/tp-03/cahier-charges-agvoy.html
 
+TODO:
+ - Demander si on peut sélectionner les rooms selon la région par inclusion de la région dans les régions en SQL ?
+ - Demander comment appeler le super de twig pour le filtrage
+
 Commandes DB:
  php bin/console doctrine:database:drop --force
  php bin/console doctrine:database:create

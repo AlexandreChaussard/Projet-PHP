@@ -2,13 +2,15 @@
 
 {% block title %}Couettes et cafés{% endblock %}
 
-{% block body %}
-    <h1>Todo index</h1>
+{% block main %}
+    <h1>Liste des couettes et cafés</h1>
 
     <table class="table">
         <thead>
         <tr>
-            <th>Id</th>
+            <th>Annonce</th>
+            <th>Région</th>
+            <th>Vendeur</th>
             <th>Accès</th>
         </tr>
         </thead>
@@ -16,10 +18,18 @@
 
         {% for room in rooms %}
             <tr>
-                <td>{{ room.id }}</td>
+                <td>{{ room.summary }}</td>
+                <td>
+                    {% for region in room.regions %}
+                        <a href="{{ path('room_filtered', {'id': region.id}) }}">
+                            {{ region }}
+                        </a>
+                    {% endfor %}
+                </td>
+                <td>{{ room.owner }}</td>
                 <td>
                     <a href="{{ path('room_ad', {'id': room.id}) }}">
-                        show
+                        voir
                     </a>
                 </td>
             </tr>

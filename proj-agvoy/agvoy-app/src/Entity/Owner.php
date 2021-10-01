@@ -131,4 +131,9 @@ class Owner
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->getFirstname() . " " . $this->getFamilyName();
+    }
 }

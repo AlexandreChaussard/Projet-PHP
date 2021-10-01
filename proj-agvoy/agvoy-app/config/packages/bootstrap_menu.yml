@@ -1,0 +1,7 @@
+bootstrap_menu:
+  menus:
+    main:
+      items:
+        home:
+          label: 'Home'
+          route: 'room'
