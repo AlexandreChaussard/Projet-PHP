@@ -70,6 +70,16 @@ class Room
      */
     private $reservations;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $previewImageUrl;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $adImageUrl;
+
     public function __construct()
     {
         $this->regions = new ArrayCollection();
@@ -244,5 +254,29 @@ class Room
     public function __toString(): string
     {
         return $this->getId();
+    }
+
+    public function getAdImageUrl(): ?string
+    {
+        return $this->adImageUrl;
+    }
+
+    public function setAdImageUrl(?string $adImageUrl): self
+    {
+        $this->adImageUrl = $adImageUrl;
+
+        return $this;
+    }
+
+    public function getPreviewImageUrl(): ?string
+    {
+        return $this->previewImageUrl;
+    }
+
+    public function setPreviewImageUrl(?string $previewImageUrl): ?string
+    {
+        $this->previewImageUrl = $previewImageUrl;
+
+        return $this->previewImageUrl;
     }
 }
