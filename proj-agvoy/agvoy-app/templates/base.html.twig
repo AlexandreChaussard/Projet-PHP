@@ -1,63 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+    
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Couettes et cafés{% endblock %}</title>
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
+
         {% block stylesheets %}
             {#{{ encore_entry_link_tags('app') }}#}
             <!-- Core theme CSS (includes Bootstrap)-->
             <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         {% endblock %}
 
         {% block javascripts %}
-            {#{{ encore_entry_script_tags('app') }}#}
+            <!-- Bootstrap core JS-->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- Core theme JS-->
+            <script {{ asset("js/scripts.js") }}></script>
         {% endblock %}
+
     </head>
+    
     <body>
 
     {% block menu %}
-        <!-- Navigation -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container px-4 px-lg-5">
                 <a class="navbar-brand" href="{{ path('room_index') }}">Couettes et cafés</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        {{ render_bootstrap_menu('main') }}
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ path('room_index') }}">Menu</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">A propos</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Outils</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#!">Filtres</a></li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li><a class="dropdown-item" href="#!">Régions</a></li>
+                                <li><a class="dropdown-item" href="#!">Vendeurs</a></li>
+                            </ul>
+                        </li>
                     </ul>
+                    <form class="d-flex">
+                        <button class="btn btn-outline-dark" type="submit">
+                            <i class="bi-cart-fill me-1"></i>
+                            Panier
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                        </button>
+                    </form>
                 </div>
             </div>
         </nav>
     {% endblock %}{# menu #}
 
-    <div class="container body-container">
-
-        <main>
-
-            {% block main %}
-                <div class="row">
-                    <div class="col-md-12">
-                        <p>
-                            <i></i>
-                        </p>
-                    </div>
-                </div>
-            {% endblock %} {# main #}
-
-        </main>
-
-    </div> <!-- /.body-container -->
+    {% block main %}
+    {% endblock %} {# main #}
 
     {% block footer %}
-        <div class="row">
-            <div class="col-md-12">
-                <footer>
-                    <p></p>
-                </footer>
-            </div>
-        </div>
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Développé par Alexandre Chaussard</p></div>
+        </footer>
     {% endblock %}{# footer #}
+
     </body>
 </html>

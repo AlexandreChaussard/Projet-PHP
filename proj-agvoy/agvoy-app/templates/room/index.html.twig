@@ -3,39 +3,49 @@
 {% block title %}Couettes et cafés{% endblock %}
 
 {% block main %}
-    <h1>Liste des couettes et cafés</h1>
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Couettes et cafés</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Les maths à louer</p>
+        </div>
+    </div>
+</header>
+<!-- Section-->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Annonce</th>
-            <th>Région</th>
-            <th>Vendeur</th>
-            <th>Accès</th>
-        </tr>
-        </thead>
-        <tbody>
+            {% for room in rooms %}
 
-        {% for room in rooms %}
-            <tr>
-                <td>{{ room.summary }}</td>
-                <td>
-                    {% for region in room.regions %}
-                        <a href="{{ path('room_filtered', {'id': region.id}) }}">
-                            {{ region }}
-                        </a>
-                    {% endfor %}
-                </td>
-                <td>{{ room.owner }}</td>
-                <td>
-                    <a href="{{ path('room_ad', {'id': room.id}) }}">
-                        voir
-                    </a>
-                </td>
-            </tr>
-        {% endfor %} {# todos #}
+                <div class="col mb-5">
+                    <div class="card h-100">
+                        <!-- Product image-->
+                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                        <!-- Product details-->
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">{{ room.summary }}</h5>
+                                <!-- Product price-->
+                                {{ room.price }} €
+                            </div>
+                        </div>
+                        <!-- Product actions-->
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <div class="text-center">
+                                <a class="btn btn-outline-dark mt-auto"  href="{{ path('room_ad', {'id': room.id}) }}">
+                                    Visualiser
+                                </a></div>
+                        </div>
+                    </div>
+                </div>
 
-        </tbody>
-    </table>
+            {% endfor %}
+
+        </div>
+    </div>
+</section>
 
 {% endblock %} {# body #}
