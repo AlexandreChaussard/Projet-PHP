@@ -29,19 +29,23 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="{{ path('room_index') }}">Couettes et cafés</a>
+                <a class="navbar-brand" href="{{ path('room_index') }}">
+                    <h4>🍥 Bed & breakfast 🍥</h4>
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ path('room_index') }}">Menu</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">A propos</a></li>
+                        <li class="nav-item"><a class="nav-link" aria-current="page" href="{{ path('room_index') }}">Connexion</a></li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Outils</a>
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Filtrer par région</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#!">Filtres</a></li>
+
+                                <li><a class="dropdown-item" href="{{ path('room_index') }}">Toutes</a></li>
                                 <li><hr class="dropdown-divider" /></li>
-                                <li><a class="dropdown-item" href="#!">Régions</a></li>
-                                <li><a class="dropdown-item" href="#!">Vendeurs</a></li>
+                                {% for region in allRegions %}
+                                    <li><a class="dropdown-item" href="{{ path('room_filter', {'id': region.id}) }}">{{ region.name }}</a></li>
+                                {% endfor %}
                             </ul>
                         </li>
                     </ul>

@@ -25,6 +25,7 @@ class RoomController extends AbstractController
 
         return $this->render('room/index.html.twig', [
             'rooms' => $rooms,
+            'allRegions' => $this->getDoctrine()->getManager()->getRepository(Region::class)->findAll(),
         ]);
     }
 
@@ -50,19 +51,21 @@ class RoomController extends AbstractController
         return $this->render('room/room_ad.html.twig', [
             'room' => $room,
             'relatedRooms' => $filteredRooms,
+            'allRegions' => $this->getDoctrine()->getManager()->getRepository(Region::class)->findAll(),
         ]);
     }
 
     /**
-     * @Route("/filter/{id}", name="room_filtered", requirements={ "id": "\d+"}, methods="GET")
+     * @Route("/filter/{id}", name="room_filter", requirements={ "id": "\d+"}, methods="GET")
      */
     public function filteredRegion(Region $region): Response
     {
-        $filteredRooms = $this->getRegionRooms($region, -1, null);
+        $filteredRooms = $this->getRegionRooms($region, -1, new Room());
 
         return $this->render('room/filter.html.twig', [
             'rooms' => $filteredRooms,
             'region' => $region,
+            'allRegions' => $this->getDoctrine()->getManager()->getRepository(Region::class)->findAll(),
         ]);
     }
 

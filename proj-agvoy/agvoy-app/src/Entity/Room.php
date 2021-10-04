@@ -279,4 +279,14 @@ class Room
 
         return $this->previewImageUrl;
     }
+
+    public function getRegionsAsString(): ?string
+    {
+        $str = "";
+        foreach($this->getRegions() as $region)
+        {
+            $str = $str . ", " . $region->getName();
+        }
+        return substr($str, 1);
+    }
 }
