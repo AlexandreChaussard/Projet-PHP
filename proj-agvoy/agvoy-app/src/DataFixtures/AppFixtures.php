@@ -21,6 +21,7 @@ class AppFixtures extends Fixture
         $region->setCountry("FR");
         $region->setName("Ile de France");
         $region->setPresentation("La région française capitale");
+        $region->setPreviewImageUrl("https://zupimages.net/up/21/40/mocp.png");
         $manager->persist($region);
 
         $manager->flush();
@@ -59,6 +60,7 @@ class AppFixtures extends Fixture
         $region2 = new Region();
         $region2->setCountry("FR");
         $region2->setName("Evry");
+        $region2->setPreviewImageUrl("https://zupimages.net/up/21/40/rjmx.png");
         $region2->setPresentation("Foyer de TSP");
         $manager->persist($region2);
 

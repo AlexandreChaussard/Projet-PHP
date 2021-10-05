@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Couettes et cafés{% endblock %}
+
+{% block main %}
+    <!-- Header-->
+    <header class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">🛏️ & ☕</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Les maths à louer - par régions</p>
+            </div>
+        </div>
+    </header>
+    <!-- Section-->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+                {% for region in allRegions %}
+
+                    <div class="col mb-5">
+                        <div class="card h-100">
+                            <!-- Product image-->
+                            <img class="card-img-top" src="{{ region.previewImageUrl }}" alt="..." />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">{{ region.name }}</h5>
+                                    <h6 class="fw-light">
+                                        {{ region.presentation }}
+                                    </h6>
+                                    <!-- Product country-->
+                                    {{ region.country }}
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center">
+                                    <a class="btn btn-outline-dark mt-auto"  href="{{ path('room_filter', {'id': region.id}) }}">
+                                        Voir les annonces
+                                    </a></div>
+                            </div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

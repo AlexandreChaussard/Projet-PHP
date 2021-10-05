@@ -4,13 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Region;
 use App\Entity\Room;
+use App\Form\RoomType;
 use PhpParser\Node\Expr\Array_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Controleur Todo
+ * Controleur Room
  * @Route("/room")
  */
 class RoomController extends AbstractController
@@ -25,7 +27,6 @@ class RoomController extends AbstractController
 
         return $this->render('room/index.html.twig', [
             'rooms' => $rooms,
-            'allRegions' => $this->getDoctrine()->getManager()->getRepository(Region::class)->findAll(),
         ]);
     }
 
@@ -51,8 +52,64 @@ class RoomController extends AbstractController
         return $this->render('room/room_ad.html.twig', [
             'room' => $room,
             'relatedRooms' => $filteredRooms,
-            'allRegions' => $this->getDoctrine()->getManager()->getRepository(Region::class)->findAll(),
         ]);
+    }
+
+    /**
+     * @Route("/new", name="room_new", methods={"GET","POST"})
+     */
+    public function new(Request $request): Response
+    {
+        $room = new Room();
+        $form = $this->createForm(RoomType::class, $room);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($room);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('room_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('room/new.html.twig', [
+            'room' => $room,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/edit", name="room_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, Room $room): Response
+    {
+        $form = $this->createForm(RoomType::class, $room);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('room_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('room/edit.html.twig', [
+            'room' => $room,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}", name="room_delete", methods={"POST"})
+     */
+    public function delete(Request $request, Room $room): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$room->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($room);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('room_index', [], Response::HTTP_SEE_OTHER);
     }
 
     /**
@@ -65,7 +122,6 @@ class RoomController extends AbstractController
         return $this->render('room/filter.html.twig', [
             'rooms' => $filteredRooms,
             'region' => $region,
-            'allRegions' => $this->getDoctrine()->getManager()->getRepository(Region::class)->findAll(),
         ]);
     }
 

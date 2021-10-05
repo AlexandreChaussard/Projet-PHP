@@ -39,6 +39,11 @@ class Region
      */
     private $rooms;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $previewImageUrl;
+
     public function __construct()
     {
         $this->rooms = new ArrayCollection();
@@ -115,5 +120,17 @@ class Region
     public function __toString(): string
     {
         return $this->getName();
+    }
+
+    public function getPreviewImageUrl(): ?string
+    {
+        return $this->previewImageUrl;
+    }
+
+    public function setPreviewImageUrl(string $previewImageUrl): self
+    {
+        $this->previewImageUrl = $previewImageUrl;
+
+        return $this;
     }
 }
