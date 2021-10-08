@@ -6,9 +6,12 @@ use App\Repository\RegionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=RegionRepository::class)
+ * @Vich\Uploadable
  */
 class Region
 {
@@ -40,9 +43,40 @@ class Region
     private $rooms;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @Vich\UploadableField(mapping="pastes", fileNameProperty="imageName")
+     * @var File
      */
-    private $previewImageUrl;
+    private $imageFile;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     */
+    private $imageName;
+
+    /**
+     *
+     * @param File|null $imageFile
+     */
+    public function setImageFile(?File $imageFile = null): void
+    {
+        $this->imageFile = $imageFile;
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
 
     public function __construct()
     {
@@ -122,15 +156,4 @@ class Region
         return $this->getName();
     }
 
-    public function getPreviewImageUrl(): ?string
-    {
-        return $this->previewImageUrl;
-    }
-
-    public function setPreviewImageUrl(string $previewImageUrl): self
-    {
-        $this->previewImageUrl = $previewImageUrl;
-
-        return $this;
-    }
 }

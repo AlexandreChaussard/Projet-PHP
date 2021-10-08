@@ -8,6 +8,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
+
 class RoomType extends AbstractType
 
 {
@@ -24,8 +26,8 @@ class RoomType extends AbstractType
             ->add('owner')
             ->add('regions')
             ->add('unavailableperiod')
-            ->add('previewimageurl')
-            ->add('adimageurl')
+            ->add('adImageFile', VichImageType::class, ['required' => false])
+            ->add('previewImageFile', VichImageType::class, ['required' => false])
         ;
     }
 

@@ -21,8 +21,17 @@ class RegionController extends AbstractController
     public function index(RegionRepository $regionRepository): Response
     {
         return $this->render('region/index.html.twig', [
+            'allRegions' => $regionRepository->findAll(),
+        ]);
+    }
+
+    /**
+     * @Route("/manage", name="region_manage", methods={"GET"})
+     */
+    public function manage(RegionRepository $regionRepository): Response
+    {
+        return $this->render('region/manage.html.twig', [
             'regions' => $regionRepository->findAll(),
-            'allRegions' => $this->getDoctrine()->getManager()->getRepository(Region::class)->findAll(),
         ]);
     }
 

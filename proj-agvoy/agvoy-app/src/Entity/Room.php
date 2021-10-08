@@ -6,9 +6,12 @@ use App\Repository\RoomRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=RoomRepository::class)
+ * @Vich\Uploadable
  */
 class Room
 {
@@ -71,14 +74,29 @@ class Room
     private $reservations;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @Vich\UploadableField(mapping="pastes", fileNameProperty="adImageName")
+     * @var File
      */
-    private $previewImageUrl;
+    private $adImageFile;
+
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @Vich\UploadableField(mapping="pastes", fileNameProperty="previewImageName")
+     * @var File
      */
-    private $adImageUrl;
+    private $previewImageFile;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     */
+    private $previewImageName;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     */
+    private $adImageName;
 
     public function __construct()
     {
@@ -89,6 +107,54 @@ class Room
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     *
+     * @param File|null $imageFile
+     */
+    public function setAdImageFile(?File $imageFile = null): void
+    {
+        $this->adImageFile = $imageFile;
+    }
+
+    public function getAdImageFile(): ?File
+    {
+        return $this->adImageFile;
+    }
+
+    /**
+     *
+     * @param File|null $imageFile
+     */
+    public function setPreviewImageFile(?File $imageFile = null): void
+    {
+        $this->previewImageFile = $imageFile;
+    }
+
+    public function getPreviewImageFile(): ?File
+    {
+        return $this->previewImageFile;
+    }
+
+    public function setPreviewImageName(?string $imageName): void
+    {
+        $this->previewImageName = $imageName;
+    }
+
+    public function getPreviewImageName(): ?string
+    {
+        return $this->previewImageName;
+    }
+
+    public function setAdImageName(?string $imageName): void
+    {
+        $this->adImageName = $imageName;
+    }
+
+    public function getAdImageName(): ?string
+    {
+        return $this->adImageName;
     }
 
     public function getSummary(): ?string
@@ -183,6 +249,17 @@ class Room
         return $this->regions;
     }
 
+    public function printRegions(): string
+    {
+        $str = "";
+        foreach($this->getRegions() as $region)
+        {
+            $str = $str . "," . $region->getName();
+        }
+
+        return $str;
+    }
+
     public function addRegion(Region $region): self
     {
         if (!$this->regions->contains($region)) {
@@ -256,31 +333,7 @@ class Room
         return $this->getId();
     }
 
-    public function getAdImageUrl(): ?string
-    {
-        return $this->adImageUrl;
-    }
-
-    public function setAdImageUrl(?string $adImageUrl): self
-    {
-        $this->adImageUrl = $adImageUrl;
-
-        return $this;
-    }
-
-    public function getPreviewImageUrl(): ?string
-    {
-        return $this->previewImageUrl;
-    }
-
-    public function setPreviewImageUrl(?string $previewImageUrl): ?string
-    {
-        $this->previewImageUrl = $previewImageUrl;
-
-        return $this->previewImageUrl;
-    }
-
-    public function getRegionsAsString(): ?string
+    public function regionsAsString(): ?string
     {
         $str = "";
         foreach($this->getRegions() as $region)

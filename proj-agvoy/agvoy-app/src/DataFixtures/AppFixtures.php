@@ -7,6 +7,7 @@ use App\Entity\Region;
 use App\Entity\Room;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Vich\UploaderBundle\Entity\File;
 
 class AppFixtures extends Fixture
 {
@@ -21,7 +22,6 @@ class AppFixtures extends Fixture
         $region->setCountry("FR");
         $region->setName("Ile de France");
         $region->setPresentation("La région française capitale");
-        $region->setPreviewImageUrl("https://zupimages.net/up/21/40/mocp.png");
         $manager->persist($region);
 
         $manager->flush();
@@ -45,8 +45,8 @@ class AppFixtures extends Fixture
         $room->setAddress("Ensemble des complexes");
         $room->setSuperficy(30);
         $room->setPrice(20);
-        $room->setPreviewImageUrl('https://zupimages.net/up/21/40/8y6a.png');
-        $room->setAdImageUrl('https://zupimages.net/up/21/40/pme9.png');
+        //$room->setPreviewImageUrl(new File());
+        //$room->setAdImageUrl('https://zupimages.net/up/21/40/pme9.png');
         //$room->addRegion($region);
         // On peut plutôt faire une référence explicite à la référence
         // enregistrée précédamment, ce qui permet d'éviter de se
@@ -60,7 +60,7 @@ class AppFixtures extends Fixture
         $region2 = new Region();
         $region2->setCountry("FR");
         $region2->setName("Evry");
-        $region2->setPreviewImageUrl("https://zupimages.net/up/21/40/rjmx.png");
+        //$region2->setPreviewImageUrl("https://zupimages.net/up/21/40/rjmx.png");
         $region2->setPresentation("Foyer de TSP");
         $manager->persist($region2);
 
@@ -81,8 +81,8 @@ class AppFixtures extends Fixture
         $room2->setAddress("????");
         $room2->setSuperficy(10);
         $room2->setPrice(10);
-        $room2->setPreviewImageUrl('https://zupimages.net/up/21/40/woov.png');
-        $room2->setAdImageUrl('https://zupimages.net/up/21/40/qk5l.png');
+        //$room2->setPreviewImageUrl('https://zupimages.net/up/21/40/woov.png');
+        //$room2->setAdImageUrl('https://zupimages.net/up/21/40/qk5l.png');
         //$room->addRegion($region);
         // On peut plutôt faire une référence explicite à la référence
         // enregistrée précédamment, ce qui permet d'éviter de se
@@ -115,8 +115,8 @@ class AppFixtures extends Fixture
         $room3->setOwner($owner3);
         $room3->addRegion($region);
         $room3->addRegion($region2);
-        $room3->setPreviewImageUrl('https://zupimages.net/up/21/40/kyte.png');
-        $room3->setAdImageUrl('https://zupimages.net/up/21/40/as0u.png');
+        //$room3->setPreviewImageUrl('https://zupimages.net/up/21/40/kyte.png');
+        //$room3->setAdImageUrl('https://zupimages.net/up/21/40/as0u.png');
         $manager->persist($room3);
 
         $manager->flush();
