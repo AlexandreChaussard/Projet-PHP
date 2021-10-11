@@ -56,7 +56,7 @@ class Region
 
     /**
      *
-     * @param File|null $imageFile
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $imageFile
      */
     public function setImageFile(?File $imageFile = null): void
     {

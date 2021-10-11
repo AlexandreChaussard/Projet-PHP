@@ -56,6 +56,39 @@ class RoomController extends AbstractController
     }
 
     /**
+     * Ajoute au panier l'annonce donnée
+     *
+     * @Route("/shop/{id}", name="room_shop", requirements={ "id": "\d+"}, methods="GET")
+     */
+    public function shopRoom(Room $room): Response
+    {
+        $shop = $this->get('session')->get('shop');
+        if( ! is_array($shop) )
+        {
+            $shop = array();
+            array_push($shop, $room->getId());
+        }
+        else
+        {
+            if(in_array($room->getId(), $shop))
+            {
+                if (($key = array_search($room->getId(), $shop)) !== false) {
+                    unset($shop[$key]);
+                }
+            }
+            else
+            {
+                array_push($shop, $room->getId());
+            }
+        }
+
+        $this->get('session')->set('shop', $shop);
+
+        return $this->redirectToRoute('room_ad',
+            ['id' => $room->getId()]);
+    }
+
+    /**
      * @Route("/new", name="room_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
