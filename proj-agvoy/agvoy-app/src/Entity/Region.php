@@ -55,12 +55,22 @@ class Region
     private $imageName;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @var \DateTime
+     */
+    private $imageUpdatedAt;
+
+    /**
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $imageFile
      */
     public function setImageFile(?File $imageFile = null): void
     {
         $this->imageFile = $imageFile;
+        if (null !== $imageFile) {
+            $this->imageUpdatedAt = new \DateTimeImmutable();
+        }
     }
 
     public function getImageFile(): ?File

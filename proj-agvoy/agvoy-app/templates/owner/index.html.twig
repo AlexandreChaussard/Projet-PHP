@@ -20,13 +20,11 @@
         {% for owner in owners %}
             <tr>
                 <td>{{ owner.id }}</td>
-                <td>{{ owner.firstname }}</td>
-                <td>{{ owner.familyName }}</td>
-                <td>{{ owner.address }}</td>
-                <td>{{ owner.country }}</td>
+                <td>{{ owner.user.firstname }}</td>
+                <td>{{ owner.user.familyName }}</td>
+                <td>{{ owner.user.country }}</td>
                 <td>
-                    <a href="{{ path('owner_show', {'id': owner.id}) }}">show</a>
-                    <a href="{{ path('owner_edit', {'id': owner.id}) }}">edit</a>
+                    <a href="{{ path('owner_delete', {'id': owner.id}) }}">supprimer</a>
                 </td>
             </tr>
         {% else %}

@@ -93,10 +93,24 @@ class Room
     private $previewImageName;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @var \DateTime
+     */
+    private $previewImageUpdatedAt;
+
+    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      * @var string
      */
     private $adImageName;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     *
+     * @var \DateTime
+     */
+    private $adImageUpdatedAt;
 
     public function __construct()
     {
@@ -116,6 +130,9 @@ class Room
     public function setAdImageFile(?File $imageFile = null): void
     {
         $this->adImageFile = $imageFile;
+        if (null !== $imageFile) {
+            $this->adImageUpdatedAt = new \DateTimeImmutable();
+        }
     }
 
     public function getAdImageFile(): ?File
@@ -130,6 +147,9 @@ class Room
     public function setPreviewImageFile(?File $imageFile = null): void
     {
         $this->previewImageFile = $imageFile;
+        if (null !== $imageFile) {
+            $this->adImageUpdatedAt = new \DateTimeImmutable();
+        }
     }
 
     public function getPreviewImageFile(): ?File

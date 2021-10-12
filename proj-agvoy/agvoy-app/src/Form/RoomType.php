@@ -23,7 +23,14 @@ class RoomType extends AbstractType
             ->add('superficy')
             ->add('price')
             ->add('address')
-            ->add('owner')
+            ;
+
+        if($options['chose_owner'])
+        {
+            $builder->add('owner');
+        }
+
+        $builder
             ->add('regions')
             ->add('unavailableperiod')
             ->add('adImageFile', VichImageType::class, ['required' => false])
@@ -35,7 +42,9 @@ class RoomType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Room::class,
+            'chose_owner' => false,
         ]);
+        $resolver->setAllowedTypes('chose_owner', 'bool');
     }
 
 }

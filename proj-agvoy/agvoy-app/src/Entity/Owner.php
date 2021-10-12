@@ -20,29 +20,15 @@ class Owner
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $firstname;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $familyName;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $address;
-
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
-    private $country;
-
-    /**
      * @ORM\OneToMany(targetEntity=Room::class, mappedBy="owner", orphanRemoval=true)
      */
     private $rooms;
+
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="owner", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function __construct()
     {
@@ -52,54 +38,6 @@ class Owner
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getFirstname(): ?string
-    {
-        return $this->firstname;
-    }
-
-    public function setFirstname(?string $firstname): self
-    {
-        $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    public function getFamilyName(): ?string
-    {
-        return $this->familyName;
-    }
-
-    public function setFamilyName(string $familyName): self
-    {
-        $this->familyName = $familyName;
-
-        return $this;
-    }
-
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(?string $address): self
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    public function getCountry(): ?string
-    {
-        return $this->country;
-    }
-
-    public function setCountry(string $country): self
-    {
-        $this->country = $country;
-
-        return $this;
     }
 
     /**
@@ -134,6 +72,18 @@ class Owner
 
     public function __toString(): string
     {
-        return $this->getFirstname() . " " . $this->getFamilyName();
+        return $this->getUser()->getFamilyName() . " " . $this->getUser()->getFirstName();
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }

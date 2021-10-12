@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Region;
 use App\Entity\Room;
+use App\Entity\User;
 use App\Form\RoomType;
 use PhpParser\Node\Expr\Array_;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -90,14 +93,34 @@ class RoomController extends AbstractController
 
     /**
      * @Route("/new", name="room_new", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_OWNER')")
      */
     public function new(Request $request): Response
     {
         $room = new Room();
-        $form = $this->createForm(RoomType::class, $room);
+        #TODO : Gérer le cas où c'est l'owner qui crée l'annonce ou un admin
+
+        dump($this->getUser()->getUsername());
+
+        if(in_array('ROLE_ADMIN', $this->getUser()->getRoles()))
+        {
+            $form = $this->createForm(RoomType::class, $room, ['chose_owner' => true]);
+        }
+        else
+        {
+            $form = $this->createForm(RoomType::class, $room, ['chose_owner' => false]);
+        }
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            if(!in_array('ROLE_ADMIN', $this->getUser()->getRoles()))
+            {
+                $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => $this->getUser()->getUsername()]);
+                $room->setOwner($user->getOwner());
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($room);
             $entityManager->flush();
@@ -113,10 +136,24 @@ class RoomController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="room_edit", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_OWNER')")
      */
     public function edit(Request $request, Room $room): Response
     {
-        $form = $this->createForm(RoomType::class, $room);
+        if($this->getUser()->getUsername() != $room->getOwner()->getUser()->getUsername())
+        {
+            $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        }
+
+        if(in_array('ROLE_ADMIN', $this->getUser()->getRoles()))
+        {
+            $form = $this->createForm(RoomType::class, $room, ['chose_owner' => true]);
+        }
+        else
+        {
+            $form = $this->createForm(RoomType::class, $room, ['chose_owner' => false]);
+        }
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -133,9 +170,14 @@ class RoomController extends AbstractController
 
     /**
      * @Route("/{id}", name="room_delete", methods={"POST"})
+     * @Security("is_granted('ROLE_ADMIN') or is_granted('ROLE_OWNER')")
      */
     public function delete(Request $request, Room $room): Response
     {
+        if($this->getUser()->getUsername() != $room->getOwner()->getUser()->getUsername())
+        {
+            $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        }
         if ($this->isCsrfTokenValid('delete'.$room->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($room);

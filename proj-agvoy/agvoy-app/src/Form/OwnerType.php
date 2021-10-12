@@ -14,7 +14,6 @@ class OwnerType extends AbstractType
         $builder
             ->add('firstname')
             ->add('familyName')
-            ->add('address')
             ->add('country')
         ;
     }

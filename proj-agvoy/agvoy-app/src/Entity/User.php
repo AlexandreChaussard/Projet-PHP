@@ -26,6 +26,21 @@ class User implements UserInterface
     private $email;
 
     /**
+     * @ORM\Column(type="string", length=180)
+     */
+    private $familyname;
+
+    /**
+     * @ORM\Column(type="string", length=180)
+     */
+    private $firstname;
+
+    /**
+     * @ORM\Column(type="string", length=2)
+     */
+    private $country;
+
+    /**
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -35,6 +50,13 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
+    private $vendor;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Owner::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $owner;
 
     public function getId(): ?int
     {
@@ -49,6 +71,55 @@ class User implements UserInterface
     public function setEmail(string $email): self
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstName(string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getFamilyName(): ?string
+    {
+        return $this->familyname;
+    }
+
+    public function setFamilyName(string $familyName): self
+    {
+        $this->familyname = $familyName;
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function isVendor()
+    {
+        return in_array('ROLE_OWNER', $this->getRoles());
+    }
+
+    public function setVendor(bool $value): self
+    {
+        array_push($this->roles, 'ROLE_OWNER');
+        $this->setRoles($this->roles);
 
         return $this;
     }
@@ -115,5 +186,22 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getOwner(): ?Owner
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(Owner $owner): self
+    {
+        // set the owning side of the relation if necessary
+        if ($owner->getUser() !== $this) {
+            $owner->setUser($this);
+        }
+
+        $this->owner = $owner;
+
+        return $this;
     }
 }

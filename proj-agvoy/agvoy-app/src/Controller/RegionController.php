@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Region;
 use App\Form\RegionType;
 use App\Repository\RegionRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,6 +28,7 @@ class RegionController extends AbstractController
 
     /**
      * @Route("/manage", name="region_manage", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function manage(RegionRepository $regionRepository): Response
     {
@@ -37,10 +39,12 @@ class RegionController extends AbstractController
 
     /**
      * @Route("/new", name="region_new", methods={"GET","POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request): Response
     {
         $region = new Region();
+
         $form = $this->createForm(RegionType::class, $region);
         $form->handleRequest($request);
 
@@ -60,6 +64,7 @@ class RegionController extends AbstractController
 
     /**
      * @Route("/{id}", name="region_show", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function show(Region $region): Response
     {
@@ -70,6 +75,7 @@ class RegionController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="region_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, Region $region): Response
     {
@@ -90,6 +96,7 @@ class RegionController extends AbstractController
 
     /**
      * @Route("/{id}", name="region_delete", methods={"POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Region $region): Response
     {
