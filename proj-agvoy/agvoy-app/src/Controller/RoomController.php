@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\OwnerWrapper;
 use App\Entity\Region;
 use App\Entity\Room;
 use App\Entity\User;
@@ -52,9 +53,23 @@ class RoomController extends AbstractController
             }
         }
 
+        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => $this->getUser()->getUsername()]);
+        $owner = $user->getOwner();
+        $ownerWrapper = new OwnerWrapper();
+        $ownerWrapper->setOwnsRoom(in_array('ROLE_ADMIN', $user->getRoles()));
+
+        if(!$ownerWrapper->isOwnsRoom() && $owner != null)
+        {
+            if($owner->getRooms()->contains($room))
+            {
+                $ownerWrapper->setOwnsRoom(true);
+            }
+        }
+
         return $this->render('room/room_ad.html.twig', [
             'room' => $room,
             'relatedRooms' => $filteredRooms,
+            'ownerWrapper' => $ownerWrapper,
         ]);
     }
 
@@ -98,9 +113,6 @@ class RoomController extends AbstractController
     public function new(Request $request): Response
     {
         $room = new Room();
-        #TODO : Gérer le cas où c'est l'owner qui crée l'annonce ou un admin
-
-        dump($this->getUser()->getUsername());
 
         if(in_array('ROLE_ADMIN', $this->getUser()->getRoles()))
         {

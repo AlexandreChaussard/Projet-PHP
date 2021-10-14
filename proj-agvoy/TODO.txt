@@ -4,10 +4,6 @@
 
 Lien vers le cahier des charges : https://www-inf.telecom-sudparis.eu/COURS/CSC4101/tp-03/cahier-charges-agvoy.html
 
-TODO:
- - https://symfony.com/doc/current/forms.html#unmapped-fields
- - checkbox pour devenir vendeur
-
 Commandes DB:
  php bin/console doctrine:database:drop --force
  php bin/console doctrine:database:create

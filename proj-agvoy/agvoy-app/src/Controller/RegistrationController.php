@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Owner;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\LoginFormAuthentificatorAuthenticator;
@@ -35,6 +36,15 @@ class RegistrationController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+
+            if($form->get('vendor')->getData())
+            {
+                $owner = new Owner();
+                $owner->setUser($user);
+                $entityManager->persist($owner);
+                $entityManager->flush();
+            }
+
             // do anything else you need here, like send an email
 
             return $guardHandler->authenticateUserAndHandleSuccess(

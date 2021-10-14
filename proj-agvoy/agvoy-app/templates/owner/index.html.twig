@@ -11,7 +11,6 @@
                 <th>Id</th>
                 <th>Firstname</th>
                 <th>FamilyName</th>
-                <th>Address</th>
                 <th>Country</th>
                 <th>actions</th>
             </tr>
@@ -24,7 +23,7 @@
                 <td>{{ owner.user.familyName }}</td>
                 <td>{{ owner.user.country }}</td>
                 <td>
-                    <a href="{{ path('owner_delete', {'id': owner.id}) }}">supprimer</a>
+                    {{ include('owner/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}

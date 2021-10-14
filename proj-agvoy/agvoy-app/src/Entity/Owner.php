@@ -84,6 +84,9 @@ class Owner
     {
         $this->user = $user;
 
+        $roles = $user->getRoles();
+        array_push($roles, 'ROLE_OWNER');
+        $user->setRoles($roles);
         return $this;
     }
 }

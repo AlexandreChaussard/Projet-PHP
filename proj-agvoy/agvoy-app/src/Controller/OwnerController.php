@@ -95,11 +95,6 @@ class OwnerController extends AbstractController
 
             $owner->getUser()->setRoles(['ROLE_USER']);
 
-            foreach($owner->getRooms() as $room)
-            {
-                $entityManager->remove($room);
-            }
-
             $entityManager->remove($owner);
             $entityManager->flush();
         }
